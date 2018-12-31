@@ -17,12 +17,12 @@ FSJS project 2 - List Filter and Pagination
    scoped to that function.
 ***/
 
-
-test
+//My global variables are located below. I will use them to reference and/or manipulate.
 
 /*** 
    Create the `showPage` function to hide all of the items in the 
-   list except for the ten you want to show.
+   list except for the ten you want to show.   
+
 
    Pro Tips: 
      - Keep in mind that with a list of 54 students, the last page 
@@ -35,16 +35,30 @@ test
        "invoke" the function 
 ***/
 
+// Selecting the student elements.
+const studentList = document.querySelectorAll('.student-item');
+const studentsPerPage = 10;
 
-
+// The function displays a maximum of 10 students per page.
+const showPage = (list, page) => {
+   for (let i = 0; i < list.length; i++) {
+      if(i >= (page * studentsPerPage) - studentsPerPage && i < (page * studentsPerPage)){
+          list[i].style.display = 'block';
+       } else {
+           list[i].style.display = 'none';
+       }
+   }
+}
+showPage(studentList, 1);
 
 /*** 
    Create the `appendPageLinks function` to generate, append, and add 
    functionality to the pagination buttons.
 ***/
 
-
-
-
+// The function creates pagination buttons and adds them to the DOM, and adds their functionality.
+const appendPageLinks = (list) => {
+   let totalPages = list / studentsPerPage;
+}
 
 // Remember to delete the comments that came with this file, and replace them with your own code comments.
