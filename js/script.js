@@ -1,64 +1,65 @@
-/******************************************
-Treehouse Techdegree:
-FSJS project 2 - List Filter and Pagination
-******************************************/
-   
-// Study guide for this project - https://drive.google.com/file/d/1OD1diUsTMdpfMDv677TfL1xO2CEkykSz/view?usp=sharing
+document.addEventListener('DOMContentLoaded', () => {
 
+   // Global variables.
+   const page = document.querySelector('.page');
+   const studentItems = document.querySelectorAll('.student-item');
+   const studentsPerPage = 10;
+   let firstPage = 1;
 
-/*** 
-   Add your global variables that store the DOM elements you will 
-   need to reference and/or manipulate. 
-   
-   But be mindful of which variables should be global and which 
-   should be locally scoped to one of the two main functions you're 
-   going to create. A good general rule of thumb is if the variable 
-   will only be used inside of a function, then it can be locally 
-   scoped to that function.
-***/
-
-//My global variables are located below. I will use them to reference and/or manipulate.
-
-/*** 
-   Create the `showPage` function to hide all of the items in the 
-   list except for the ten you want to show.   
-
-
-   Pro Tips: 
-     - Keep in mind that with a list of 54 students, the last page 
-       will only display four.
-     - Remember that the first student has an index of 0.
-     - Remember that a function `parameter` goes in the parens when 
-       you initially define the function, and it acts as a variable 
-       or a placeholder to represent the actual function `argument` 
-       that will be passed into the parens later when you call or 
-       "invoke" the function 
-***/
-
-// Selecting the student elements.
-const studentList = document.querySelectorAll('.student-item');
-const studentsPerPage = 10;
-
-// The function displays a maximum of 10 students per page.
-const showPage = (list, page) => {
-   for (let i = 0; i < list.length; i++) {
-      if(i >= (page * studentsPerPage) - studentsPerPage && i < (page * studentsPerPage)){
-          list[i].style.display = 'block';
-       } else {
-           list[i].style.display = 'none';
-       }
+   // The function displays a maximum of 10 students per page.
+   const showPage = (list, pageNum) => {
+      for (let i = 0; i < list.length; i++) {
+         if(i >= (pageNum * studentsPerPage) - studentsPerPage && i < (pageNum * studentsPerPage)){
+            list[i].style.display = 'block';
+         } else {
+            list[i].style.display = 'none';
+         }
+      }
    }
-}
-showPage(studentList, 1);
 
-/*** 
-   Create the `appendPageLinks function` to generate, append, and add 
-   functionality to the pagination buttons.
-***/
+   // The function creates pagination buttons and adds them to the DOM, and adds their functionality.
+   const appendPageLinks = (list) => {
+      let totalPages = Math.ceil(list.length / studentsPerPage);
+      const paginationDiv = document.createElement('div');
+      const ul = document.createElement('ul');
+      page.appendChild(paginationDiv);
+      paginationDiv.appendChild(ul);
+      paginationDiv.className = 'pagination';
+      
+      // The loop creates and appends the appropriate number of buttons depending on the amount of total pages.
+      for (let i = 1; i <= totalPages; i++) {
+         let li = document.createElement('li');
+         let a = document.createElement('a');
+         a.textContent = i;
+         a.href = '#'
+         ul.appendChild(li);
+         li.appendChild(a);
+      }
 
-// The function creates pagination buttons and adds them to the DOM, and adds their functionality.
-const appendPageLinks = (list) => {
-   let totalPages = list / studentsPerPage;
-}
+      /* The if statement determines that the first anchor objects gets the class 'active' which makes the pageuser understand
+      that they are on the first page */
+      if (list.length >= 0) {
+         let a = document.querySelectorAll('a');
+         a[0].className = 'active';
+      }
 
-// Remember to delete the comments that came with this file, and replace them with your own code comments.
+      /* The event handler controls the display of the students. When an anchor is clicked it will show the relevant page.
+      The handler makes sure that the clicked anchor display as active and the loop makes anchors, that are not clickd, inactive. */
+      paginationDiv.addEventListener ('click', (e) => {
+         if (e.target.tagName === 'A') {
+            pageNumber = parseInt(e.target.textContent);
+            showPage(list, pageNumber);
+            let a = document.querySelectorAll('a');
+            for (let i = 0; i < totalPages; i++) {
+               a[i].classList.remove('active');
+            }
+            e.target.className = 'active';
+         }
+      });
+   }
+
+   //The showPage and appendPageLinks functions are called.
+   showPage(studentItems, firstPage);
+   appendPageLinks(studentItems);
+
+});
