@@ -3,13 +3,29 @@ document.addEventListener('DOMContentLoaded', () => {
    // Global variables.
    const page = document.querySelector('.page');
    const studentItems = document.querySelectorAll('.student-item');
+   const studentNames = document.querySelectorAll('.student-details h3');
+   const pageHeader = document.querySelector('.page-header');
    const studentsPerPage = 10;
    let firstPage = 1;
+
+   // Search box created and appended to the page header.
+   const searchDiv = document.createElement('div');
+   pageHeader.appendChild(searchDiv);
+   searchDiv.className = 'student-search';
+
+   const searchBox = document.createElement('input');
+   searchBox.type = 'text';
+   searchBox.placeholder = 'Search for students...';
+   searchDiv.appendChild(searchBox);
+
+   const searchButton = document.createElement('button');
+   searchButton.textContent = 'Search';
+   searchDiv.appendChild(searchButton);
 
    // The function displays a maximum of 10 students per page.
    const showPage = (list, pageNum) => {
       for (let i = 0; i < list.length; i++) {
-         if(i >= (pageNum * studentsPerPage) - studentsPerPage && i < (pageNum * studentsPerPage)){
+         if (i >= (pageNum * studentsPerPage) - studentsPerPage && i < (pageNum * studentsPerPage)){
             list[i].style.display = 'block';
          } else {
             list[i].style.display = 'none';
@@ -58,6 +74,34 @@ document.addEventListener('DOMContentLoaded', () => {
       });
    }
 
+   searchDiv.addEventListener ('click', (e) => {
+      if (e.target.tagName === 'BUTTON') {
+         search();
+      }
+   }); 
+
+   function search () {
+      let input, filter, txtValue; 
+      input = searchBox;
+      filter = input.value.toUpperCase();
+      for (let i = 0; i < studentItems.length; i++) {
+          let h3 = studentNames[i];
+          txtValue = h3.textContent;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+              studentItems[i].style.display = 'block';
+          } else {
+              studentItems[i].style.display = 'none';
+          }
+      }
+      for (let i = 0; i < studentItems.length; i++) {
+         if (studentItems[i].style.display === 'block') {
+            numberOfStudents += 1
+         }
+         return numberOfStudents;
+      }
+      appendPageLinks(numberOfStudents);
+   
+   }
    //The showPage and appendPageLinks functions are called.
    showPage(studentItems, firstPage);
    appendPageLinks(studentItems);
