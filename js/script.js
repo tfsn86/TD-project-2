@@ -80,30 +80,38 @@ document.addEventListener('DOMContentLoaded', () => {
       }
    }); 
 
-   function search () {
+   search = () => {
       let input, filter, txtValue; 
       input = searchBox;
       filter = input.value.toUpperCase();
+      
       for (let i = 0; i < studentItems.length; i++) {
-          let h3 = studentNames[i];
-          txtValue = h3.textContent;
-          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+         let h3 = studentNames[i];
+         txtValue = h3.textContent;
+         if (txtValue.toUpperCase().indexOf(filter) > -1) {
               studentItems[i].style.display = 'block';
-          } else {
+              function createList () {
+               let numStudents = [];
+               for (let i = 0; i < studentItems.length; i++) {
+                  numStudents.push(txtValue);
+               }
+                  return numStudents;
+              }
+              console.log(createList());
+
+              
+         } else {
               studentItems[i].style.display = 'none';
-          }
-      }
-      for (let i = 0; i < studentItems.length; i++) {
-         if (studentItems[i].style.display === 'block') {
-            numberOfStudents += 1
          }
-         return numberOfStudents;
+         
+         
       }
-      appendPageLinks(numberOfStudents);
-   
+      
    }
+
+
+   
    //The showPage and appendPageLinks functions are called.
    showPage(studentItems, firstPage);
    appendPageLinks(studentItems);
-
 });
